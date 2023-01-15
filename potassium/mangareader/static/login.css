@@ -1,0 +1,23 @@
+.page-title {
+    color: #403D58;
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 35px;
+}
+
+.login-form-container {
+   width: 30%;
+   margin: 100px auto 0 auto;
+}
+
+.login-btn {
+    background-color: #403D58;
+    color: #F2EFEA;
+    border: none;
+    padding: 6px 13px 6px 13px;
+    border-radius: 3px;
+}
+
+.form-control {
+    border: 0.4px solid lightgray !important;
+}

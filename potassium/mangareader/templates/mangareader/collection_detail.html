@@ -1,0 +1,258 @@
+{% extends 'mangareader/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Topic View
+{% endblock %}
+
+{% block css-link %}
+    <link rel="stylesheet" href="{% static 'collection-details.css' %}" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <div class="collections-tab">
+        {% for collection in collections %}
+            <a href="{% url 'collection-detail' collection.pk %}" class="collection-tab-item" id="collection-tab-item-{{collection.pk}}">{{collection.name}}</a>
+        {% empty %}
+            <h5>No Collections</h5>
+        {% endfor %}
+    </div>
+
+    <div class="collection-name-container">
+        <p id="collection-id" hidden>{{collection.pk}}</p>
+        <a href="#" class="collection-name" id="collection-name">{{collection.name}}</a>
+        <i id="editBtn" class="fa-solid fa-pen-to-square edit-icon"></i>
+        <i id="delBtn" class="fa-solid fa-trash del-icon"></i>
+    </div>
+
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+        <span class="close">&times;</span>
+        <p>Are you sure you want to delete this collection?</p>
+        <br>
+        <form action="{% url 'dashboard' %}" method="POST">
+            {% csrf_token %}
+            <input type="hidden" value="{{collection.pk}}" name="delete-col">
+            <input type="submit" value="Yes" class="yes-btn">
+            <a href="#" class="no-btn">No</a>
+        </form>
+        </div>
+    </div>
+
+    <div class="collection-progressbar-container">
+        <h4 class="collection-progressbar-label">[<span id="completed-questions-collection-count">{{collection.completed}}</span> / {{collection.total}}]</h4>
+        <progress id="collection-progressbar" class="collection-progressbar" value={{collection.completed}} max={{collection.total}}></progress>
+    </div>
+
+    <a href="{% url 'collection-update' collection.pk %}" class="add-questions-button">Add questions</a>
+
+    <hr class="linebreak">
+
+    <a href="{% url 'collection-detail-list' collection.pk 'difficulty_level' %}" class="list-view-btn">List View</a>
+    <button id="collapse-btn" class="collapse-btn">Expand All</button>
+    
+    {% for topic, object in collection.topics_data.items %}
+        <div class="topic-table-container">
+            <div class="topic-metadata-container">
+                <div class="topic-name">{{topic}} (<span id="completed-questions-topic-count-{{topic}}">{{object.complete}}</span> / {{object.total}})</div> 
+                <div class="topic-progressbar-container">
+                    <progress id="{{topic}}-bar" class="topic-progressbar" value={{object.complete}} max={{object.total}}></progress>
+                </div>
+            </div>
+            <table class="topic-table">
+                <tr>
+                    <th>Question</th>
+                    <th>Difficulty</th>
+                    <th>Topic</th>
+                    <th>Completed</th>
+                    <th></th>
+                </tr>
+                {% for question in object.questions %}
+                    <tr>
+                        <td>{{question.name}} <a href="{{question.link}}" target="_blank"><i class="fa-solid fa-link"></i></a></td>
+                        <td class="question-difficulty-{{question.difficulty}}">{{question.difficulty}}</td>
+                        <td>{{question.topic}}</td>
+                        <td>
+                            {% if question.complete == True %}
+                                <input id="{{topic}}" type="checkbox" value="{{question.pk}}" class="custom-checkbox" checked> 
+                            {% else %}
+                                <input id="{{topic}}" type="checkbox" value="{{question.pk}}" class="custom-checkbox">
+                            {% endif %}
+                        </td>
+                        <td>
+                            <form action="{% url 'delete-question-from-collection' %}" method="POST">
+                                {% csrf_token %}
+                                <input type="hidden" name="question_id" value="{{question.pk}}">
+                                <input type="hidden" name="collection_id" value="{{collection.pk}}">
+                                <input type="hidden" name="format" value="topic">
+                                <!-- <input type="submit" value="Delete" class="yes-btn"> -->
+                                <button type="submit" class="del-question-icon">
+                                    <i id="delBtn" class="fa-solid fa-trash del-icon"></i>
+                                </button>
+                            </form>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <h3>No questions</h3>
+                {% endfor %}
+            </table>
+        </div>
+    {% endfor %}
+    <script>
+        /* modal display on and off */
+        var modal = document.getElementById("confirmationModal");
+        var btn = document.getElementById("delBtn");
+        var span = document.getElementsByClassName("close")[0];
+        var noBtn = document.getElementsByClassName("no-btn")[0];
+
+        btn.onclick = function() {
+            modal.style.display = "block";
+        }
+
+        span.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        noBtn.onclick = function() {
+            modal.style.display = "none";
+        }
+
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+
+        /* make the table collapsible */
+        let topicMetadataContainer = document.getElementsByClassName("topic-metadata-container");
+        for (let i = 0; i < topicMetadataContainer.length; i++) {
+            topicMetadataContainer[i].addEventListener("click", function() {
+                var content = this.nextElementSibling;
+                if (content.style.display === "table") {
+                    content.style.display = "none";
+                } else {
+                    content.style.display = "table";
+                }
+            });
+        }
+
+        /* update the progress bar when checkbox is clicked */
+        let checkboxes = document.getElementsByClassName("custom-checkbox");
+        for (let i = 0; i < checkboxes.length; i++) {
+            checkboxes[i].addEventListener("click", function() {
+                //alert()
+                let collectionProgressbar = document.getElementById("collection-progressbar");
+                let completedQuestionCollectionCount = document.getElementById("completed-questions-collection-count");
+
+                //console.log(collectionProgressbar.value)
+                if (checkboxes[i].checked == true) {
+                    var topic_name = checkboxes[i].id + '-bar';
+                    console.log(topic_name)
+                    let topicProgressbar = document.getElementById(topic_name)
+                    topicProgressbar.value = (parseInt(topicProgressbar.value) + 1) + ''
+                    collectionProgressbar.value = (parseInt(collectionProgressbar.value) + 1) + '';
+
+                    completedQuestionCollectionCount.innerText = (parseInt(completedQuestionCollectionCount.innerText) + 1) + '';
+                    let completedQuestionTopicCount = document.getElementById("completed-questions-topic-count-" + checkboxes[i].id);
+                    completedQuestionTopicCount.innerText = (parseInt(completedQuestionTopicCount.innerText) + 1) + '';
+
+                } else {
+                    var topic_name = checkboxes[i].id + '-bar';
+                    //console.log(topic_name)
+                    let topicProgressbar = document.getElementById(topic_name)
+                    topicProgressbar.value = (parseInt(topicProgressbar.value) - 1) + ''
+                    collectionProgressbar.value = (parseInt(collectionProgressbar.value) - 1) + '';
+
+                    completedQuestionCollectionCount.innerText = (parseInt(completedQuestionCollectionCount.innerText) - 1) + '';
+                    let completedQuestionTopicCount = document.getElementById("completed-questions-topic-count-" + checkboxes[i].id);
+                    completedQuestionTopicCount.innerText = (parseInt(completedQuestionTopicCount.innerText) - 1) + '';
+                }
+            });
+        }
+
+        $('.custom-checkbox').change(function() {
+            var token = '{{csrf_token}}';
+            $.ajax("{% url 'collection-post-db' %}", {
+                type: "POST",
+                headers: { "X-CSRFToken": token },
+                data: {id: $(this).val()}
+            });
+            //console.log($(this).val())
+        })
+
+        let collectionName = document.getElementById('collection-name')
+        let editBtn = document.getElementById('editBtn');
+        editBtn.addEventListener("click", function () {
+            collectionName.contentEditable = "true";
+            collectionName.contentEditable = "plaintext-only";
+            collectionName.focus();
+        })
+
+        collectionName.addEventListener('input', function() {
+            let newName = $('#collection-name').html();
+            let collectionID = $('#collection-id').html();
+
+            let collectionTabItem = document.getElementById('collection-tab-item-' + collectionID);
+            collectionTabItem.textContent = newName;
+
+            var token = '{{csrf_token}}';
+            $.ajax("{% url 'collection-post-namechange' %}", {
+                type: "POST",
+                headers: { "X-CSRFToken": token },
+                success: function(response) {
+                    //console.log(response)
+                },
+                data: {
+                    id: collectionID,
+                    newName: newName
+                }
+            });
+        });
+
+        $("#collection-name").on("keydown",function(e){
+            var key = e.keyCode || e.charCode;  // ie||others
+            if(key == 13)  // if enter key is pressed
+            $(this).blur();  // lose focus
+        });
+
+        $("#collapse-btn ").on("click", function(e) {
+            let topicTables = document.getElementsByClassName('topic-table');
+            for (let i = 0; i < topicTables.length; i++) {
+                if (topicTables[i].style.display === "table") {
+                    $('#collapse-btn').text("Expand All");
+                    topicTables[i].style.display = "none";
+                } else {
+                    $('#collapse-btn').text("Collapse All");
+                    topicTables[i].style.display = "table";
+                }
+            }
+        });
+
+
+        // $('#collection-name').on('focus', function() {
+        //     before = $(this).html();
+        // }).on('blur keyup paste', function() { 
+        //     if (before != $(this).html()) { 
+        //         $(this).trigger('change'); 
+        //     }
+        // });
+
+        // $('#collection-name').on('change', function(e) {
+        //     console.log($('#collection-name').html())
+        // });
+
+        // $('#collection-name').click(function() {
+        //     alert('text is changed')
+        // })
+        // function testing() {
+        //     var token = '{{csrf_token}}';
+        //     console.log('Hello World');
+        //     console.log($(this).val())
+        //     $.ajax("{% url 'collection-post-db' %}", {
+        //         type: "POST",
+        //         headers: { "X-CSRFToken": token },
+        //         data: {id: $(this).val()}
+        //     });
+        // }
+    </script>
+{% endblock %}

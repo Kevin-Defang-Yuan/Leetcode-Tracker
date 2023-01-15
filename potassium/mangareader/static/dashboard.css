@@ -1,0 +1,32 @@
+body {
+    background-color: #403D58;
+}
+
+.container {
+    text-align: center;
+    margin-top: 15%;
+}
+
+.fa-code {
+    color: #F2EFEA;
+    font-size: 55px;
+    margin-bottom: 50px;
+    transition: transform 650ms;
+}
+
+.fa-code:hover {
+    transform: translateY(-20px);
+}
+
+.container .app-name {
+    color: #66D7D1;
+    font-family: "Solway", sans-serif;
+    font-size: 40px;
+}
+
+.container .description {
+    color: #F2EFEA;
+    font-family: "Solway", sans-serif;
+    font-size: 30px;
+    margin-top: 25px;
+}

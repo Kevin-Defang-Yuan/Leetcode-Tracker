@@ -1,0 +1,11 @@
+
+
+<form action="" method="POST">
+    {% csrf_token %}
+    {{form.name}}
+
+    {{form.questions}}
+    <input type="submit" value="Submit">
+</form>
+
+

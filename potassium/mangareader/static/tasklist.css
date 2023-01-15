@@ -1,0 +1,93 @@
+* {
+    margin: 0;
+}
+
+.page-title {
+    color: #403D58;
+    margin-bottom: 20px;
+}
+
+.tasklist-container {
+    margin: 30px auto 0 auto;
+    width: 40%;
+}
+
+
+input[type='text'] {
+    width: 70%;
+    border: 2px solid lightgray;
+    border-radius: 3px;
+    padding: 12px;
+    font-size: 16px;
+}
+
+.add-btn {
+    background-color: #403D58; /* Green */
+    border: none;
+    border-radius: 3px;
+    color: #F2EFEA;
+    padding: 14px 35px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 15px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.check-icon {
+    color: #F2EFEA;
+    margin-right: 5px;
+}
+
+.list-icon {
+    margin-right: 5px;
+}
+
+.incomplete-item :hover {
+    text-decoration: none;
+}
+
+.del-icon {
+    color: red;
+}
+
+ul {
+    padding: 0;
+    margin-top: 20px;
+    list-style: none;
+}
+
+li {
+    margin-top: 6px;
+}
+
+.incomplete-item-container {
+    background-color: #F2EFEA;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.incomplete-item {
+    font-size: 22px;
+    color: #403D58;
+}
+
+.complete-item-container {
+    background-color: #FC7753;
+    padding: 10px;
+    border-radius: 3px;
+}
+
+.complete-item {
+    font-size: 22px;
+    text-decoration: line-through;
+    color: #F2EFEA;
+}
+
+.del-icon {
+    float: right;
+    color: black;
+}

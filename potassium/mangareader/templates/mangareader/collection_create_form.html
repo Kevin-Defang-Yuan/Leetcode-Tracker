@@ -1,0 +1,65 @@
+{% extends 'mangareader/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Create a new collection
+{% endblock %}
+
+{% block css-link %}
+    <link rel="stylesheet" href="{% static 'collection-create-form.css' %}" type="text/css">
+{% endblock %}
+    
+{% block body %}
+    <form action="{% url 'collection-create' %}" method="POST">
+        {% csrf_token %}
+        <h1 class="page-title">Create a new collection</h1>
+        <input type="text" name="name" required="" id="id_name" class="collection-name-input" placeholder="Collection Name">
+        <table class="topic-table" id="myTable">
+            <thead>
+                <tr>
+                    <th>Add</th>
+                    <th>Question</th>
+                    <th>Topic</th>
+                    <th>Difficulty</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for question in questions %}
+                <tr>
+                    <td>
+                        <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                    </td>
+                    <td>{{question.name}}</td>
+                    <td>{{question.topic}}</td>
+                    <td class="question-difficulty-{{question.difficulty}}">{{question.difficulty}}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        
+        <!-- <div id="id_questions">
+            {% for question in questions %}
+            <div>
+                <label for="id_questions_{{question.id}}">
+                    <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                    {{question.name}} - {{question.topic}} - {{question.difficulty}}
+                </label>
+            </div>
+            {% endfor %}
+        </div>-->
+        <input type="submit" class="submit-btn" value="Submit">
+    </form> 
+
+{% endblock %}
+
+
+        <!-- <div id="id_questions">
+            {% for question in questions %}
+            <div id="{{question.name}}" class="{{question.topic}}" name="{{question.difficulty}}">
+                <label for="id_questions_{{question.id}}">
+                    <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                    {{question.name}} - {{question.topic}} - {{question.difficulty}}
+                </label>
+            </div>
+            {% endfor %}
+        </div> -->

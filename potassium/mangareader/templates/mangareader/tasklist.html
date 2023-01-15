@@ -1,0 +1,39 @@
+{% extends 'mangareader/layout.html' %}
+
+{% load static %}
+
+{% block css-link %}
+    <link rel="stylesheet" href="{% static 'tasklist.css' %}" type="text/css">
+{% endblock %}
+
+{% block title %}
+    Tasklist
+{% endblock %}
+
+{% block body %}
+    <div class="tasklist-container">
+        <h1 class="page-title">Task List</h1>
+        <form action="{% url 'tasklist' %}" method="POST">
+            {% csrf_token %}
+            <input name="task_name" type="text" placeholder="Task">
+            <input type="submit" value="Add Task" class="add-btn">
+        </form>
+        <ul>
+            {% for task in tasks %}
+                {% if task.complete %}
+                    <li class="complete-item-container">
+                        <i class="fa-solid fa-check check-icon"></i>
+                        <a href="{% url 'task-update' task.pk %}" class="complete-item">{{task.description}}</a>
+                        <a href="{% url 'task-delete' task.pk %}" class="del-icon"><i class="fa-solid fa-xmark"></i></a>
+                    </li>
+                {% else %}
+                    <li class="incomplete-item-container">
+                        <i class="fa-solid fa-list list-icon"></i>
+                        <a href="{% url 'task-update' task.pk %}" class="incomplete-item">{{task.description}}</a>
+                        <a href="{% url 'task-delete' task.pk %}" class="del-icon"><i class="fa-solid fa-xmark"></i></a>
+                    </li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+{% endblock %}

@@ -1,0 +1,68 @@
+{% extends 'mangareader/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Add Questions
+{% endblock %}
+
+{% block css-link %}
+    <link rel="stylesheet" href="{% static 'collection-update-form.css' %}" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Add Questions for <span class="collection-name">{{ collection.name }}</span> </h1>
+    <form action="{% url 'collection-update' collection.pk %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="name" value={{collection.name}} id="id_name">
+        <input type="hidden" name="col" value="{{collection.pk}}">
+        <table class="topic-table" id="id_question">
+            <tr>
+                <th>Add</th>
+                <th>Question</th>
+                <th>Topic</th>
+                <th>Difficulty</th>
+            </tr>
+            {% for question in questions %}
+                {% if question not in collection.questions.all %}
+                    <tr>
+                        <td>
+                            <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                        </td>
+                        <td>{{question.name}}</td>
+                        <td>{{question.topic}}</td>
+                        <td class="question-difficulty-{{question.difficulty}}">{{question.difficulty}}</td>
+                    </tr>
+                {% else %}
+                    <tr hidden>
+                        <td>
+                            <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}" checked>
+                        </td>
+                        <td>{{question.name}}</td>
+                        <td>{{question.topic}}</td>
+                        <td>{{question.difficulty}}</td>
+                    </tr>
+                {% endif %}
+            {% endfor %}
+        </table>
+        <!-- <div id="id_questions">
+            {% for question in questions %}
+                {% if question not in collection.questions.all %}
+                <div>
+                    <label for="id_questions_{{question.id}}">
+                        <input type="checkbox" name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                        {{question.name}} - {{question.topic}} - {{question.difficulty}}
+                    </label>
+                </div>
+                {% else %}
+                <div>
+                    <label for="id_questions_{{question.id}}" hidden>
+                        <input type="checkbox" checked name="questions" value="{{question.id}}" id="id_questions_{{question.id}}">
+                        {{question.name}} - {{question.topic}} - {{question.difficulty}}
+                    </label>
+                </div>
+                {% endif %}
+            {% endfor %}
+        </div> -->
+        <input type="submit" class="submit-btn" value="Submit">
+    </form>
+{% endblock %}

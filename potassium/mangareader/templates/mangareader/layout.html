@@ -1,0 +1,39 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% block css-link %} {% endblock %}
+    <link rel="stylesheet" href="{% static 'layout.css' %}" type="text/css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css" integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Solway">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+    <title>{% block title %} {% endblock %}</title>
+</head>
+<body>
+    <div class="navbar">
+        <a href="{% url 'dashboard' %}" class="app-title">MANGA READER</a>
+        {% if request.user.is_authenticated %}
+            <a href="{% url 'dashboard' %}" class="collections-navlink">Collections</a>
+            <a href="{% url 'resources' %}" class="resources-navlink">Resources</a>
+            <a href="{% url 'tasklist' %}" class="tasklist-navlink">Task List</a>
+        {% endif %}
+        
+        {% if request.user.is_authenticated %}
+            <div class="navbar-inner">
+                <a href="{% url 'collection-create' %}" class="add-collection-button">Add Collection</a>
+                <span class="username">{{request.user}}</span>
+                <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+            </div>
+        {% else %}
+            <a href="{% url 'login' %}" class="login-btn">Login</a>
+        {% endif %}
+    </div>
+
+    {% block body %}
+    {% endblock %}
+</body>
+</html>

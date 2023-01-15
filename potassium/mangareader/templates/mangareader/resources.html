@@ -1,0 +1,60 @@
+{% extends 'mangareader/layout.html' %}
+{% load static %}
+
+{% block title %}
+    Collection Detail
+{% endblock %}
+
+{% block css-link %}
+    <link rel="stylesheet" href="{% static 'resources.css' %}" type="text/css">
+{% endblock %}
+
+{% block body %}
+    <h1 class="page-title">Resources</h1>
+    <div class="container">
+        <div class="resource-one">
+            <!-- <img src="img.png" alt="cracking the coding interview" class="resource-img"> -->
+            <a href="https://www.amazon.com/Cracking-Coding-Interview-Programming-Questions/dp/0984782850" target="_blank">
+                <div class="description-container">
+                    <h3 class="resource-title">Cracking the coding interview</h3>
+                    <p class="resource-description">
+                        This book includes 189 programming questions
+                        for your technical interview. It also details the
+                        step by step solution of each question so that
+                        you can use similar stratagies for questions you
+                        haven’t seen before.
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="spacer"></div>
+        <div class="resource-two">
+            <a href="https://dsarevision.com/DSA-Revision-Guide.pdf" target="_blank">
+                <div class="description-container">
+                    <h3 class="resource-title">Complete Data structures & Algorithms</h3>
+                    <p class="resource-description">
+                        This is a complete guide to understand 
+                        the most important algorithms and data
+                        structures for the technical interview.
+                    </p>
+                </div>
+            </a>
+        </div>
+        <div class="spacer"></div>
+        <div class="resource-three">
+            <a href="https://www.computer-pdf.com/programming/813-tutorial-algorithms-notes-for-professionals-book.html" target="_blank">
+                <div class="description-container">
+                    <h3 class="resource-title">Algorithms Notes for Professionals</h3>
+                    <p class="resource-description">
+                        This is an excellent resource for software
+                        engineers and students who are preparing
+                        for the technical interviews. This book
+                        provides comprehensive notes for the
+                        algorithms you need in the industry.
+                    </p>
+                </div>
+            </a>
+        </div>
+    </div>
+
+{% endblock %}

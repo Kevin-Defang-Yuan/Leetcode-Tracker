@@ -1,0 +1,120 @@
+<!-- {% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}" type="text/css">
+    <title>Dashboard</title>
+</head>
+<body>
+    {% if request.user.is_authenticated %}
+        <p>{{request.user}}</p>
+        <a href="{% url 'logout' %}" class="logout-button">Logout</a>
+    {% else %}
+        <a href="{% url 'login' %}">Login</a>
+    {% endif %}
+    
+
+    <a href="{% url 'collection-create-list' %}" class="add-collection-button">Add Collection</a>
+
+    <a href="{% url 'dashboard' %}" class="dashboard-view">Undo List View</a>
+    
+    <div class="collections-tab">
+        {% for collection in collections %}
+        <button class="tablinks" value="{{collection.name}}">{{collection.name}}</button>
+        {% empty %}
+        <h5>No Collections</h5>
+        {% endfor %}
+    </div>
+
+    <div class="content" id="content">
+    {% for collection in collections %}
+        <h2>{{collection.name}}</h2>
+        <h4>{{collection.completed}} / {{collection.total}}</h4>
+        <a href="{% url 'collection-update-list' collection.pk %}" class="edit-collection-button">Edit</a>
+        <a href="{% url 'collection-delete-list' collection.pk %}" class="delete-collection-button">Delete</a>
+        <form  method="GET">
+            <select action="{% url 'list-order' 'difficulty_level' %}" name="dropdown" onChange="this.form.submit()">
+                {% if order == "difficulty_level" %}
+                    <option value="difficulty_level" selected>Difficulty Increasing</option>
+                    <option value="-difficulty_level">Difficulty Decreasing</option>
+                    <option value="name">Alphabetical Increasing</option>
+                    <option value="-name">Alphabetical Decreasing</option>
+                {% elif order == "-difficulty_level" %}
+                    <option value="difficulty_level">Difficulty Increasing</option>
+                    <option value="-difficulty_level" selected>Difficulty Decreasing</option>
+                    <option value="name">Alphabetical Increasing</option>
+                    <option value="-name">Alphabetical Decreasing</option>
+                {% elif order == "name" %}
+                    <option value="difficulty_level">Difficulty Increasing</option>
+                    <option value="-difficulty_level">Difficulty Decreasing</option>
+                    <option value="name" selected>Alphabetical Increasing</option>
+                    <option value="-name">Alphabetical Decreasing</option>
+                {% elif order == "-name" %}
+                    <option value="difficulty_level">Difficulty Increasing</option>
+                    <option value="-difficulty_level">Difficulty Decreasing</option>
+                    <option value="name">Alphabetical Increasing</option>
+                    <option value="-name" selected>Alphabetical Decreasing</option>
+                {% else %}
+                    <option value="difficulty_level">Difficulty Increasing</option>
+                    <option value="-difficulty_level">Difficulty Decreasing</option>
+                    <option value="name">Alphabetical Increasing</option>
+                    <option value="-name">Alphabetical Decreasing</option>
+                {% endif %}
+            </select>
+        </form> 
+
+        
+
+            <table class="topic-table">
+                <tr>
+                    <th>Question</th>
+                    <th>Difficulty</th>
+                    <th>Topic</th>
+                    <th>Completed</th>
+                    <th>Link</th>
+                    {% if collection.custom %}
+                    <th>Delete</th>
+                    {% endif %}
+                </tr>
+                {% for question in collection.questions_sorted_list %}
+                    <tr>
+                        <td>{{question.name}}</td>
+                        <td>{{question.difficulty}}</td>
+                        <td>{{question.topic}}</td>
+                        <td>
+                            <form action="{% url 'list-post' question.pk collection.pk %}" method="POST">
+                                {% csrf_token %}
+                                {% if question.complete == True %}
+                                <input type="checkbox" onChange="this.form.submit()" checked>
+                                {% else %}
+                                <input type="checkbox" onChange="this.form.submit()">
+                                {% endif %}
+                            </form>
+                        </td>
+                        <td>
+                            <a href={{question.link}}>Link</a>
+                        </td>
+                        {% if collection.custom %}
+                        <td>
+                            <form action="{% url 'list-post' question.pk collection.pk %}" method="POST">
+                                {% csrf_token %}
+                                <input type="submit" value="Delete" name="Delete">
+                            </form>
+                        </td>
+                        {% endif %}
+                    </tr>
+                {% empty %}
+                    <h3>No questions</h3>
+                {% endfor %}
+            </table>
+    {% endfor %}
+    </div>
+</body>
+</html>
+
+ -->

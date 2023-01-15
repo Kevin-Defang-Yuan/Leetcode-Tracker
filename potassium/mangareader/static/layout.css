@@ -1,0 +1,85 @@
+* {
+    margin: 0;
+  }
+  
+  .navbar {
+    background-color: #403D58;
+    color: #F2EFEA;
+    padding: 20px;
+  }
+  
+  .app-title {
+    font-size: 24px;
+    color: #66D7D1;
+    text-decoration: none;
+    font-family: "Solway", sans-serif;
+  }
+
+  .app-title:hover {
+    font-size: 24px;
+    color: #66D7D1;
+    text-decoration: none;
+  }
+  
+  .collections-navlink {
+    font-size: 20px;
+    margin-left: 25px;
+    text-decoration: none;
+    color: #F2EFEA;
+  }
+  
+  .resources-navlink {
+    font-size: 20px;
+    margin-left: 10px;
+    text-decoration: none;
+    color: #F2EFEA;
+  }
+  
+  .tasklist-navlink {
+    font-size: 20px;
+    margin-left: 10px;
+    text-decoration: none;
+    color: #F2EFEA;
+  }
+  
+  .username {
+    margin-left: 5px;
+    margin-right: 10px;
+    font-size: 20px;
+  }
+  
+  .logout-button, .add-collection-button {
+    font-size: 20px;
+    text-decoration: none;
+    color: #F2EFEA;
+    margin-right: 5px;
+  }
+
+  .login-btn {
+    font-size: 17px;
+    text-decoration: none;
+    color: #F2EFEA;
+  }
+
+  .login-btn:hover {
+    color: #F2EFEA;
+  }
+  
+  .navbar-inner {
+    margin-top: 2px;
+    float: right;
+  }
+  
+  .collections-tab {
+      background-color: #66D7D1;
+      text-align: center;
+      padding: 15px;
+  }
+  
+  .collection-tab-item {
+    color: #403D58;
+    margin-right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    text-decoration: none;
+  }
